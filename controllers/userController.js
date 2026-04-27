@@ -1,58 +1,88 @@
-import users from "../data/users.js";
+import User from "../models/User.js";
 
 // GET all users
-export const getUsers = (req, res) => {
-  res.json(users);
-};
+export const getUser = async (req, res) => {
+  try {
+    const users = await User.find();
 
-
-
-export const createUser = (req, res) => {
-  const { name } = req.body;
-
-  const newUser = {
-    id: users.length + 1,
-    name
-  };
-
-  users.push(newUser);
-
-  res.status(201).json(newUser);
-};
-
-export const deleteUser = (req, res) => {
-  const id = Number(req.params.id);
-
-  const index = users.findIndex(user => user.id === id);
-
-  if (index === -1) {
-    return res.status(404).json({ message: "User not found" });
+    res.status(200).json(users);
+  } catch (error) {
+    res.status(500).json({
+      message: error.message
+    });
   }
-
-  const deletedUser = users.splice(index, 1);
-
-  res.json({
-    message: "User deleted",
-    user: deletedUser[0]
-  });
 };
 
+// POST create new user
+export const createUser = async (req, res) => {
+  try {
+    const { name } = req.body || {};
 
+    if (!name) {
+      return res.status(400).json({
+        message: "Name is required"
+      });
+    }
 
-export const updateUser = (req, res) => {
-  const id = Number(req.params.id);
-  const { name } = req.body;
+    const user = await User.create({ name });
 
-  const user = users.find(user => user.id === id);
-
-  if (!user) {
-    return res.status(404).json({ message: "User not found" });
+    res.status(201).json({
+      message: "User created successfully",
+      user
+    });
+  } catch (error) {
+    res.status(500).json({
+      message: error.message
+    });
   }
-
-  user.name = name || user.name;
-
-  res.json({
-    message: "User updated",
-    user
-  });
 };
+
+// PUT update user
+export const updateUser = async (req, res) => {
+  try {
+    const { name } = req.body || {};
+
+    const user = await User.findByIdAndUpdate(
+      req.params.id,
+      { name },
+      { new: true, runValidators: true }
+    );
+
+    if (!user) {
+      return res.status(404).json({
+        message: "User not found"
+      });
+    }
+
+    res.status(200).json({
+      message: "User updated successfully",
+      user
+    });
+  } catch (error) {
+    res.status(500).json({
+      message: error.message
+    });
+  }
+};
+
+// DELETE user
+export const deleteUser = async (req, res) => {
+  try {
+    const user = await User.findByIdAndDelete(req.params.id);
+
+    if (!user) {
+      return res.status(404).json({
+        message: "User not found"
+      });
+    }
+
+    res.status(200).json({
+      message: "User deleted successfully"
+    });
+  } catch (error) {
+    res.status(500).json({
+      message: error.message
+    });
+  }
+};
+
