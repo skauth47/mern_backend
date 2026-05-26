@@ -86,3 +86,14 @@ export const deleteUser = async (req, res) => {
   }
 };
 
+export const createManyUsers = async (req, res) => {
+  try {
+    const users = await User.insertMany(req.body);
+
+    res.status(201).json(users);
+  } catch (error) {
+    res.status(500).json({
+      message: error.message
+    });
+  }
+};
