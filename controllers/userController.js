@@ -1,11 +1,25 @@
 import User from "../models/User.js";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
+import path from "node:path";
+import { fileURLToPath } from "node:url";
+
+const publicDirectory = path.join(
+  path.dirname(fileURLToPath(import.meta.url)),
+  "../public"
+);
 
 // GET all users
 export const getUser = async (req, res) => {
   try {
-    const users = await User.find();
+    if (
+      req.query.format !== "json" &&
+      req.get("accept")?.includes("text/html")
+    ) {
+      return res.sendFile("users.html", { root: publicDirectory });
+    }
+
+    const users = await User.find().select("-password -__v");
 
     res.status(200).json(users);
   } catch (error) {
