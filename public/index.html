@@ -1,0 +1,573 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="description"
+      content="A clean landing page for the MERN Users API."
+    />
+    <title>MERN Users API</title>
+    <style>
+      :root {
+        color-scheme: dark;
+        --bg: #07111f;
+        --panel: rgba(15, 31, 50, 0.76);
+        --panel-strong: rgba(18, 39, 62, 0.96);
+        --line: rgba(148, 163, 184, 0.18);
+        --muted: #9fb0c7;
+        --text: #edf7ff;
+        --cyan: #5ee9d2;
+        --blue: #76b7ff;
+        --orange: #ffbb66;
+        --red: #ff8590;
+        --shadow: 0 20px 70px rgba(0, 0, 0, 0.34);
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      html {
+        scroll-behavior: smooth;
+      }
+
+      body {
+        min-height: 100vh;
+        margin: 0;
+        overflow-x: hidden;
+        color: var(--text);
+        font-family:
+          Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont,
+          "Segoe UI", sans-serif;
+        background:
+          radial-gradient(circle at 12% 8%, rgba(37, 99, 235, 0.24), transparent 28rem),
+          radial-gradient(circle at 88% 20%, rgba(20, 184, 166, 0.2), transparent 25rem),
+          var(--bg);
+      }
+
+      body::before {
+        position: fixed;
+        inset: 0;
+        z-index: -1;
+        content: "";
+        opacity: 0.32;
+        background-image: linear-gradient(var(--line) 1px, transparent 1px),
+          linear-gradient(90deg, var(--line) 1px, transparent 1px);
+        background-size: 56px 56px;
+        mask-image: linear-gradient(to bottom, black, transparent 86%);
+      }
+
+      a {
+        color: inherit;
+        text-decoration: none;
+      }
+
+      button,
+      a {
+        -webkit-tap-highlight-color: transparent;
+      }
+
+      .shell {
+        width: min(1120px, calc(100% - 32px));
+        margin: 0 auto;
+      }
+
+      header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 24px 0;
+      }
+
+      .brand,
+      .status,
+      .eyebrow,
+      .route {
+        display: inline-flex;
+        align-items: center;
+      }
+
+      .brand {
+        gap: 11px;
+        font-weight: 750;
+        letter-spacing: -0.03em;
+      }
+
+      .logo {
+        display: grid;
+        width: 34px;
+        height: 34px;
+        place-items: center;
+        border: 1px solid rgba(94, 233, 210, 0.48);
+        border-radius: 11px;
+        color: var(--cyan);
+        background: rgba(94, 233, 210, 0.11);
+        font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+        font-size: 13px;
+      }
+
+      .status {
+        gap: 8px;
+        padding: 8px 12px;
+        border: 1px solid var(--line);
+        border-radius: 999px;
+        color: var(--muted);
+        background: rgba(15, 31, 50, 0.58);
+        font-size: 12px;
+        font-weight: 700;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+      }
+
+      .status::before {
+        width: 8px;
+        height: 8px;
+        border-radius: 50%;
+        content: "";
+        background: var(--cyan);
+        box-shadow: 0 0 16px var(--cyan);
+      }
+
+      .hero {
+        display: grid;
+        min-height: 580px;
+        align-items: center;
+        gap: 54px;
+        padding: 70px 0 86px;
+        grid-template-columns: minmax(0, 1.12fr) minmax(360px, 0.88fr);
+      }
+
+      .eyebrow {
+        gap: 9px;
+        color: var(--cyan);
+        font-size: 12px;
+        font-weight: 800;
+        letter-spacing: 0.18em;
+        text-transform: uppercase;
+      }
+
+      .eyebrow::before {
+        width: 34px;
+        height: 1px;
+        content: "";
+        background: var(--cyan);
+      }
+
+      h1 {
+        max-width: 700px;
+        margin: 20px 0 20px;
+        font-size: clamp(54px, 8vw, 90px);
+        font-weight: 780;
+        letter-spacing: -0.08em;
+        line-height: 0.93;
+      }
+
+      .gradient {
+        color: transparent;
+        background: linear-gradient(100deg, var(--cyan), var(--blue));
+        -webkit-background-clip: text;
+        background-clip: text;
+      }
+
+      .intro {
+        max-width: 620px;
+        margin: 0;
+        color: var(--muted);
+        font-size: 18px;
+        line-height: 1.75;
+      }
+
+      .actions {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 12px;
+        margin-top: 34px;
+      }
+
+      .button {
+        display: inline-flex;
+        align-items: center;
+        min-height: 48px;
+        gap: 9px;
+        padding: 0 18px;
+        border: 1px solid var(--line);
+        border-radius: 12px;
+        color: var(--text);
+        background: rgba(15, 31, 50, 0.72);
+        font-size: 14px;
+        font-weight: 750;
+        transition:
+          transform 180ms ease,
+          border-color 180ms ease,
+          background 180ms ease;
+      }
+
+      .button:hover {
+        transform: translateY(-2px);
+        border-color: rgba(118, 183, 255, 0.5);
+        background: rgba(24, 51, 80, 0.86);
+      }
+
+      .button-primary {
+        border-color: rgba(94, 233, 210, 0.5);
+        color: #041b24;
+        background: var(--cyan);
+      }
+
+      .button-primary:hover {
+        border-color: var(--cyan);
+        background: #8cf7e5;
+      }
+
+      .terminal {
+        overflow: hidden;
+        border: 1px solid var(--line);
+        border-radius: 18px;
+        background: rgba(3, 11, 22, 0.78);
+        box-shadow: var(--shadow);
+      }
+
+      .terminal-top {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 14px 16px;
+        border-bottom: 1px solid var(--line);
+        background: rgba(15, 31, 50, 0.72);
+      }
+
+      .dots {
+        display: flex;
+        gap: 7px;
+      }
+
+      .dots span {
+        width: 8px;
+        height: 8px;
+        border-radius: 50%;
+        background: rgba(159, 176, 199, 0.58);
+      }
+
+      .terminal-label {
+        color: var(--muted);
+        font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+        font-size: 11px;
+        letter-spacing: 0.12em;
+        text-transform: uppercase;
+      }
+
+      pre {
+        min-height: 250px;
+        margin: 0;
+        padding: 22px;
+        overflow-x: auto;
+        color: #d9e8f7;
+        font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+        font-size: 13px;
+        line-height: 1.9;
+      }
+
+      .prompt {
+        color: var(--cyan);
+      }
+
+      .command {
+        color: var(--blue);
+      }
+
+      .string {
+        color: var(--orange);
+      }
+
+      section {
+        padding: 26px 0 84px;
+      }
+
+      .section-heading {
+        display: flex;
+        align-items: end;
+        justify-content: space-between;
+        gap: 24px;
+        margin-bottom: 22px;
+      }
+
+      h2 {
+        margin: 0;
+        font-size: clamp(32px, 5vw, 46px);
+        letter-spacing: -0.06em;
+      }
+
+      .section-copy {
+        max-width: 470px;
+        margin: 0;
+        color: var(--muted);
+        line-height: 1.7;
+      }
+
+      .routes {
+        display: grid;
+        gap: 12px;
+      }
+
+      .route {
+        justify-content: space-between;
+        gap: 20px;
+        padding: 18px 20px;
+        border: 1px solid var(--line);
+        border-radius: 14px;
+        background: var(--panel);
+        transition:
+          transform 180ms ease,
+          border-color 180ms ease,
+          background 180ms ease;
+      }
+
+      .route:hover {
+        transform: translateX(4px);
+        border-color: rgba(118, 183, 255, 0.42);
+        background: var(--panel-strong);
+      }
+
+      .route-main {
+        display: flex;
+        align-items: center;
+        gap: 14px;
+      }
+
+      .method {
+        min-width: 66px;
+        padding: 6px 8px;
+        border-radius: 7px;
+        color: #07111f;
+        font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+        font-size: 11px;
+        font-weight: 900;
+        text-align: center;
+      }
+
+      .get {
+        background: var(--cyan);
+      }
+
+      .post {
+        background: var(--blue);
+      }
+
+      .put {
+        background: var(--orange);
+      }
+
+      .delete {
+        background: var(--red);
+      }
+
+      code {
+        color: #d7e8f8;
+        font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+        font-size: 14px;
+      }
+
+      .route-description {
+        color: var(--muted);
+        font-size: 14px;
+        text-align: right;
+      }
+
+      footer {
+        display: flex;
+        justify-content: space-between;
+        gap: 24px;
+        padding: 24px 0 32px;
+        border-top: 1px solid var(--line);
+        color: var(--muted);
+        font-size: 13px;
+      }
+
+      @media (max-width: 850px) {
+        .hero {
+          min-height: auto;
+          padding-top: 56px;
+          grid-template-columns: 1fr;
+        }
+
+        .section-heading {
+          display: block;
+        }
+
+        .section-copy {
+          margin-top: 12px;
+        }
+      }
+
+      @media (max-width: 600px) {
+        .shell {
+          width: min(100% - 22px, 1120px);
+        }
+
+        header {
+          padding-top: 16px;
+        }
+
+        h1 {
+          font-size: 60px;
+        }
+
+        .hero {
+          gap: 36px;
+          padding: 54px 0 62px;
+        }
+
+        .route {
+          display: block;
+        }
+
+        .route-description {
+          margin: 10px 0 0 80px;
+          text-align: left;
+        }
+
+        footer {
+          display: block;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="shell">
+      <header>
+        <a class="brand" href="/">
+          <span class="logo">{ }</span>
+          <span>MERN Users API</span>
+        </a>
+        <span class="status">Service online</span>
+      </header>
+
+      <main>
+        <div class="hero">
+          <div>
+            <span class="eyebrow">Express + MongoDB</span>
+            <h1>Build with a <span class="gradient">clean API.</span></h1>
+            <p class="intro">
+              A focused REST API for users, authentication, and collection
+              testing. Start with one request, then explore the available
+              endpoints below.
+            </p>
+            <div class="actions">
+              <a class="button button-primary" href="/api/users">
+                View live response <span aria-hidden="true">-></span>
+              </a>
+              <button class="button" id="copy-button" type="button">
+                Copy base URL
+              </button>
+            </div>
+          </div>
+
+          <div class="terminal" aria-label="API quick start example">
+            <div class="terminal-top">
+              <div class="dots" aria-hidden="true">
+                <span></span><span></span><span></span>
+              </div>
+              <span class="terminal-label">Quick start</span>
+            </div>
+            <pre><span class="prompt">$</span> <span class="command">curl</span> <span class="string" id="users-url"></span>
+
+<span class="prompt">#</span> Create a user
+<span class="prompt">$</span> <span class="command">curl</span> -X POST \
+  -H <span class="string">"Content-Type: application/json"</span> \
+  -d <span class="string">'{"name":"Ada"}'</span> \
+  <span class="string" id="users-post-url"></span></pre>
+          </div>
+        </div>
+
+        <section id="endpoints">
+          <div class="section-heading">
+            <h2>Available endpoints</h2>
+            <p class="section-copy">
+              Use these routes for CRUD operations, bulk inserts, and account
+              access. JSON request bodies are required for write operations.
+            </p>
+          </div>
+
+          <div class="routes">
+            <a class="route" href="/api/users">
+              <span class="route-main">
+                <span class="method get">GET</span>
+                <code>/api/users</code>
+              </span>
+              <span class="route-description">List all users</span>
+            </a>
+            <div class="route">
+              <span class="route-main">
+                <span class="method post">POST</span>
+                <code>/api/users</code>
+              </span>
+              <span class="route-description">Create a user</span>
+            </div>
+            <div class="route">
+              <span class="route-main">
+                <span class="method put">PUT</span>
+                <code>/api/users/:id</code>
+              </span>
+              <span class="route-description">Update a user</span>
+            </div>
+            <div class="route">
+              <span class="route-main">
+                <span class="method delete">DELETE</span>
+                <code>/api/users/:id</code>
+              </span>
+              <span class="route-description">Delete a user</span>
+            </div>
+            <div class="route">
+              <span class="route-main">
+                <span class="method post">POST</span>
+                <code>/api/users/bulk</code>
+              </span>
+              <span class="route-description">Create multiple users</span>
+            </div>
+            <div class="route">
+              <span class="route-main">
+                <span class="method post">POST</span>
+                <code>/api/users/register</code>
+              </span>
+              <span class="route-description">Register an account</span>
+            </div>
+            <div class="route">
+              <span class="route-main">
+                <span class="method post">POST</span>
+                <code>/api/users/login</code>
+              </span>
+              <span class="route-description">Log in to an account</span>
+            </div>
+          </div>
+        </section>
+      </main>
+
+      <footer>
+        <span>MERN Users API</span>
+        <span>REST endpoints for collection testing</span>
+      </footer>
+    </div>
+
+    <script>
+      const baseUrl = window.location.origin;
+      const usersUrl = `${baseUrl}/api/users`;
+      const copyButton = document.querySelector("#copy-button");
+
+      document.querySelector("#users-url").textContent = usersUrl;
+      document.querySelector("#users-post-url").textContent = usersUrl;
+
+      copyButton.addEventListener("click", async () => {
+        try {
+          await navigator.clipboard.writeText(baseUrl);
+          copyButton.textContent = "Copied";
+          window.setTimeout(() => {
+            copyButton.textContent = "Copy base URL";
+          }, 1800);
+        } catch {
+          copyButton.textContent = baseUrl;
+        }
+      });
+    </script>
+  </body>
+</html>
