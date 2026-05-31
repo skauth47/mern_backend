@@ -284,6 +284,105 @@
         padding: 26px 0 84px;
       }
 
+      .showcase {
+        display: grid;
+        gap: 28px;
+        padding: 28px;
+        border: 1px solid rgba(94, 233, 210, 0.28);
+        border-radius: 20px;
+        background:
+          linear-gradient(135deg, rgba(16, 49, 70, 0.92), rgba(12, 28, 48, 0.9)),
+          var(--panel);
+        box-shadow: var(--shadow);
+        grid-template-columns: minmax(0, 1fr) minmax(280px, 0.72fr);
+      }
+
+      .showcase h2 {
+        margin: 13px 0 12px;
+      }
+
+      .showcase-copy {
+        max-width: 620px;
+        margin: 0;
+        color: var(--muted);
+        line-height: 1.75;
+      }
+
+      .showcase-meta {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 9px;
+        margin-top: 22px;
+      }
+
+      .tag {
+        padding: 7px 10px;
+        border: 1px solid var(--line);
+        border-radius: 999px;
+        color: var(--muted);
+        background: rgba(7, 17, 31, 0.36);
+        font-size: 12px;
+        font-weight: 700;
+      }
+
+      .login-preview {
+        align-self: stretch;
+        padding: 20px;
+        border: 1px solid var(--line);
+        border-radius: 15px;
+        background: rgba(3, 11, 22, 0.54);
+      }
+
+      .preview-top {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 14px;
+        color: var(--muted);
+        font-size: 11px;
+        font-weight: 800;
+        letter-spacing: 0.12em;
+        text-transform: uppercase;
+      }
+
+      .preview-status {
+        color: var(--cyan);
+      }
+
+      .preview-field {
+        margin-top: 18px;
+      }
+
+      .preview-field span {
+        display: block;
+        margin-bottom: 7px;
+        color: var(--muted);
+        font-size: 11px;
+        font-weight: 700;
+      }
+
+      .preview-input,
+      .preview-submit {
+        width: 100%;
+        min-height: 38px;
+        border-radius: 8px;
+      }
+
+      .preview-input {
+        border: 1px solid var(--line);
+        background: rgba(15, 31, 50, 0.86);
+      }
+
+      .preview-submit {
+        display: grid;
+        margin-top: 18px;
+        place-items: center;
+        color: #041b24;
+        background: var(--cyan);
+        font-size: 12px;
+        font-weight: 900;
+      }
+
       .section-heading {
         display: flex;
         align-items: end;
@@ -391,6 +490,10 @@
           grid-template-columns: 1fr;
         }
 
+        .showcase {
+          grid-template-columns: 1fr;
+        }
+
         .section-heading {
           display: block;
         }
@@ -479,6 +582,51 @@
   <span class="string" id="users-post-url"></span></pre>
           </div>
         </div>
+
+        <section>
+          <div class="showcase">
+            <div>
+              <span class="eyebrow">Frontend showcase</span>
+              <h2>Try the login experience.</h2>
+              <p class="showcase-copy">
+                Explore the deployed frontend for this project. The login and
+                registration flow runs on Netlify and connects to this Render
+                API for account access.
+              </p>
+              <div class="actions">
+                <a
+                  class="button button-primary"
+                  href="https://mycrudfrontend.netlify.app/"
+                  target="_blank"
+                  rel="noreferrer"
+                >
+                  Open frontend demo <span aria-hidden="true">-&gt;</span>
+                </a>
+              </div>
+              <div class="showcase-meta">
+                <span class="tag">Netlify frontend</span>
+                <span class="tag">Login + registration</span>
+                <span class="tag">Render API</span>
+              </div>
+            </div>
+
+            <div class="login-preview" aria-label="Frontend login preview">
+              <div class="preview-top">
+                <span>Login preview</span>
+                <span class="preview-status">Live</span>
+              </div>
+              <div class="preview-field">
+                <span>Email address</span>
+                <div class="preview-input"></div>
+              </div>
+              <div class="preview-field">
+                <span>Password</span>
+                <div class="preview-input"></div>
+              </div>
+              <div class="preview-submit">Sign in</div>
+            </div>
+          </div>
+        </section>
 
         <section id="endpoints">
           <div class="section-heading">
