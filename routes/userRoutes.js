@@ -7,16 +7,20 @@ import {
 	deleteUser, 
 	createManyUsers,
 	registerUser,
-	loginUser
+	loginUser,
+  getMe,
+  updateUserAccess
   } from "../controllers/userController.js";
 
 const router = express.Router();
 
-router.get("/", getUser);
-router.post("/", createUser);
-router.put("/:id", updateUser);
-router.delete("/:id", deleteUser);
-router.post("/bulk", createManyUsers);
+router.get("/", authMiddleware, getUser);
+router.post("/", authMiddleware, createUser);
+router.put("/:id", authMiddleware, updateUser);
+router.delete("/:id", authMiddleware, deleteUser);
+router.post("/bulk", authMiddleware, createManyUsers);
+router.get("/me", authMiddleware, getMe);
+router.patch("/:id/access", authMiddleware, updateUserAccess);
 router.post("/login", loginUser);
 router.post("/register", registerUser);
 export default router;

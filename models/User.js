@@ -22,6 +22,32 @@ const userSchema = new mongoose.Schema(
       type: String,
       required: [true, "Password is required"],
     },
+
+    role: {
+      type: String,
+      enum: ["master", "user"],
+      default: "user",
+    },
+
+    isApproved: {
+      type: Boolean,
+      default: false,
+    },
+
+    permissions: {
+      canAdd: {
+        type: Boolean,
+        default: false,
+      },
+      canEdit: {
+        type: Boolean,
+        default: false,
+      },
+      canDelete: {
+        type: Boolean,
+        default: false,
+      },
+    },
   },
   {
     timestamps: true,

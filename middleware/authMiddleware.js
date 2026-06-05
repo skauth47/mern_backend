@@ -1,5 +1,7 @@
 import jwt from "jsonwebtoken";
 
+const JWT_SECRET = process.env.JWT_SECRET || "mysecretkey";
+
 const authMiddleware = (req, res, next) => {
   try {
     // GET TOKEN FROM HEADER
@@ -16,7 +18,7 @@ const authMiddleware = (req, res, next) => {
     const token = authHeader.split(" ")[1];
 
     // VERIFY TOKEN
-    const decoded = jwt.verify(token, "mysecretkey");
+    const decoded = jwt.verify(token, JWT_SECRET);
 
     // SAVE USER INFO IN REQUEST
     req.user = decoded;
